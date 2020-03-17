@@ -45,6 +45,7 @@ bool vsettings::is_valid_key( cstr key )
         if ( ch == '[' )  return false;
         if ( ch == ']' )  return false;
     }
+
     return true;
 }
 //=======================================================================================
@@ -197,7 +198,7 @@ vsettings::str_list vsettings::subgroup_names() const
     return res;
 }
 //=======================================================================================
-void vsettings::load_from_ini( cstr fname )
+void vsettings::from_file( cstr fname )
 {
     ifstream f( fname, ios_base::in|ios_base::binary );
     if ( !f.good() )
@@ -218,13 +219,13 @@ void vsettings::load_from_ini( cstr fname )
     load( buffer.data() );
 }
 //=======================================================================================
-void vsettings::save_to_ini( cstr fname ) const
+void vsettings::to_file( cstr fname ) const
 {
     ofstream f( fname, ios_base::out|ios_base::trunc|ios_base::binary );
     if ( !f.good() )
         throw verror << "Cannot open file '" << fname << "' for save ini.";
 
-    f << save();
+    f << c_str();
 }
 //=======================================================================================
 static void save_keys( vcat* res, string prefix, const vsettings& sett )
@@ -250,7 +251,7 @@ static void save_with_subs( vcat* res, string prefix, const vsettings& sett )
     }
 }
 //---------------------------------------------------------------------------------------
-vsettings::str vsettings::save() const
+vsettings::str vsettings::c_str() const
 {
     vcat res("##\n#\n\n");
 
@@ -322,7 +323,7 @@ void vsettings::load( cstr data )
 //=======================================================================================
 ostream& operator <<( ostream& os, const vsettings& sett )
 {
-    os << sett.save();
+    os << sett.c_str();
     return os;
 }
 //=======================================================================================

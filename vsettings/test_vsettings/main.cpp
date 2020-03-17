@@ -49,31 +49,32 @@ int main(int argc, char *argv[])
     s.set( "hello", "world" );
 
     {
-    auto sg = s.subgroup("SUB");
-    sg.set( "321", "456" );
-    sg.set( "098", "world" );
-    auto sg2 = sg.subgroup("SSG");
-    sg2.set( "sskey", "ssval" );
-    }
-    {
-    auto sg = s.subgroup("SUB-2");
-    sg.set( "321", "456" );
-    sg.set( "098", "world" );
+        auto sg = s.subgroup("SUB");
+        sg.set( "321", "456" );
+        sg.set( "098", "world" );
+        auto sg2 = sg.subgroup("SSG");
+        sg2.set( "sskey", "ssval" );
     }
 
-    vdeb << s.save();
+    {
+        auto sg = s.subgroup("SUB-2");
+        sg.set( "321", "456" );
+        sg.set( "098", "world" );
+    }
+
+    vdeb << s.c_str();
 
     vsettings s2;
-    s2.load( s.save() );
+    s2.load( s.c_str() );
 
     vdeb << "=============\n" << s2;
 
-
     s.load( "[Ololo]\n  key = val" );
 
-
     return 0;
-    ::testing::InitGoogleTest(&argc, argv);
+
+    ::testing::InitGoogleTest( &argc, argv );
+
     return RUN_ALL_TESTS();
 }
 //=======================================================================================

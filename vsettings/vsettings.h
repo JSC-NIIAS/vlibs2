@@ -32,15 +32,14 @@ public:
     str_list keys() const;
     str_list subgroup_names() const;
 
-    str  save() const;
+    str  c_str() const;
     void load( cstr data );
 
-    void load_from_ini( cstr fname );
-    void save_to_ini  ( cstr fname ) const;
+    void from_file( cstr fname );
+    void to_file  ( cstr fname ) const;
 
     vsettings();
     ~vsettings();
-
 
     static bool is_valid_key      ( cstr key );
     static bool is_valid_subgroup ( cstr key );
@@ -49,6 +48,7 @@ public:
     vsettings& operator =(const vsettings&) = default;
 
 private:
+
     class _pimpl; std::shared_ptr<_pimpl> _p;
 };
 //=======================================================================================
