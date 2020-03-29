@@ -99,7 +99,7 @@
 #if  (V_GNUC_COMPILER_VERSION <= 0x050400)
     #define V_PRAGMA_DIAGNOSTIC_IGNORED_IMPLICIT_FALLTHROUGH
 #else
-    #define V_PRAGMA_DIAGNOSTIC_IGNORED_IMPLICIT_FALLTHROUGH \
+    #define V_PRAGMA_DIAGNOSTIC_IGNORED_IMPLICIT_FALLTHROUGH
       #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 #endif
 //=======================================================================================
@@ -112,7 +112,7 @@
 #if  (V_GNUC_COMPILER_VERSION <= 0x050400)
     #define V_PRAGMA_DIAGNOSTIC_IGNORED_NOEXCEPT_TYPE
 #else
-    #define V_PRAGMA_DIAGNOSTIC_IGNORED_NOEXCEPT_TYPE \
+    #define V_PRAGMA_DIAGNOSTIC_IGNORED_NOEXCEPT_TYPE
       #pragma GCC diagnostic ignored "-Wnoexcept-type"
 #endif
 //=======================================================================================

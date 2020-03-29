@@ -403,7 +403,7 @@ vsettings::str vsettings::to_ini() const
         save_with_subs( &res, "", subgroup(sname) );
     }
 
-    return res;
+    return res.str();
 }
 //=======================================================================================
 void vsettings::from_ini( cstr ini )
