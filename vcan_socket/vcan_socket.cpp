@@ -14,7 +14,7 @@
 #include "vlog.h"
 
 using namespace impl_vposix;
-
+using namespace std::chrono;
 using str  = std::string;
 using cstr = const std::string&;
 
@@ -60,6 +60,9 @@ bool vcan_socket::_pimpl::read_1()
 
     auto res = wrap_sys_socket::recv_from_no_err( fd, &frame, sizeof(frame),
                                                       &addr,  sizeof(addr) );
+    struct timeval tv;
+    ioctl(fd, SIOCGSTAMP, &tv);
+
     if (res < 0)
     {
         ErrNo err;
@@ -80,7 +83,8 @@ bool vcan_socket::_pimpl::read_1()
         { ptr, frame.can_dlc },
         addr.can_ifindex,
         addr.can_addr.tp.rx_id,
-        addr.can_addr.tp.tx_id
+        addr.can_addr.tp.tx_id,
+        seconds(tv.tv_sec ) + microseconds(tv.tv_usec)
     };
 
     owner->received( msg );
