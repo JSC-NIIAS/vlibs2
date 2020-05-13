@@ -2,7 +2,6 @@
 
 #include <linux/can.h>
 #include <sys/socket.h>
-#include <sys/ioctl.h>
 
 #include "impl_vposix/safe_fd.h"
 #include "impl_vposix/wrap_sys_epoll.h"
@@ -15,7 +14,7 @@
 #include "vlog.h"
 
 using namespace impl_vposix;
-using namespace std::chrono;
+
 using str  = std::string;
 using cstr = const std::string&;
 
