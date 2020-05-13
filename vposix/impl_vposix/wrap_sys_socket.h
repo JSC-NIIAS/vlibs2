@@ -53,6 +53,8 @@ namespace impl_vposix
                                  void* addr, unsigned addr_size );
 
         static bool send_no_err( int fd, const std::string& data );
+
+        //  Throws if not all data received.
         static void send_raw   ( int fd, const void *data, size_t len );
 
         static void send_to( int fd, const std::string& data,

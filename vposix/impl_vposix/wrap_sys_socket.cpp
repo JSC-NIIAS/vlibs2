@@ -216,10 +216,12 @@ bool wrap_sys_socket::send_no_err( int fd, const std::string& data )
     }
 }
 //=======================================================================================
-void wrap_sys_socket::send_raw(int fd, const void *data , size_t len)
+void wrap_sys_socket::send_raw( int fd, const void * data, size_t len )
 {
     auto sended = _send_no_err( fd, data, len );
-    if ( sended < 0 ) ErrNo().do_throw( vcat("socket::send_1(",fd,",",data) );
+
+    if ( sended != ssize_t(len) )
+        ErrNo().do_throw( vcat("socket::send_raw(",fd,",",data,",",len,")=",sended) );
 }
 //=======================================================================================
 void wrap_sys_socket::send_to( int fd, const std::string &data,
