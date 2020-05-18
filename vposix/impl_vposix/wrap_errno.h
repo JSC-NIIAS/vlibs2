@@ -30,7 +30,7 @@ namespace impl_vposix
         bool has()  const;
         std::string text() const;
 
-        //  Бросает verror(text) если есть ошибка.
+        //  Бросает posix_error(text).
         void do_throw( const std::string& msg );
 
         //  EIO

@@ -4,6 +4,7 @@
 #include <memory>
 #include <vsignal.h>
 #include <ostream>
+#include "vtime_point.h"
 
 //=======================================================================================
 class vcan_socket final
@@ -18,6 +19,7 @@ public:
         int         iface;
         id_type     rx;
         id_type     tx;
+        vtime_point time;
     };
 
     vsignal<message> received;

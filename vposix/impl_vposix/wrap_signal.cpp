@@ -1,4 +1,6 @@
+#include "wrap_signal.h"
 #include "impl_vposix/poll_context.h"
+#include "impl_vposix/linux_call.h"
 
 #include <signal.h>
 
@@ -27,4 +29,25 @@ static int register_exit = []
 
     return 0;
 }();
+//=======================================================================================
+
+//=======================================================================================
+void wrap_signal::kill( pid_t pid, int sig )
+{
+    linux_call::check( ::kill, pid, sig );
+}
+//=======================================================================================
+bool wrap_signal::kill_no_err( pid_t pid, int sig )
+{
+    return linux_call::no_err( ::kill, pid, sig );
+}
+//=======================================================================================
+//       If sig is 0, then no signal is sent, but existence and permission
+//       checks are still performed; this can be used to check for the
+//       existence of a process ID or process group ID that the caller is
+//       permitted to signal.
+bool wrap_signal::has_process( pid_t pid )
+{
+    return 0 == kill_no_err(pid, 0);
+}
 //=======================================================================================

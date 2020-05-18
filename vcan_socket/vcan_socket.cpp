@@ -2,13 +2,13 @@
 
 #include <linux/can.h>
 #include <sys/socket.h>
-#include <sys/ioctl.h>
 
 #include "impl_vposix/safe_fd.h"
 #include "impl_vposix/wrap_sys_epoll.h"
 #include "impl_vposix/wrap_net_if.h"
 #include "impl_vposix/wrap_linux_can.h"
 #include "impl_vposix/wrap_sys_socket.h"
+#include "impl_vposix/wrap_sys_ioctl.h"
 
 #include "vbyte_buffer.h"
 #include "vlog.h"
@@ -80,7 +80,8 @@ bool vcan_socket::_pimpl::read_1()
         { ptr, frame.can_dlc },
         addr.can_ifindex,
         addr.can_addr.tp.rx_id,
-        addr.can_addr.tp.tx_id
+        addr.can_addr.tp.tx_id,
+        wrap_sys_ioctl::sioc_get_timestamp( fd )
     };
 
     owner->received( msg );
@@ -103,9 +104,11 @@ void vcan_socket::_pimpl::raw( cstr iface )
 //=======================================================================================
 void vcan_socket::_pimpl::send( id_type id, const std::string& data )
 {
-    if (data.size() > 8) throw verror << "Too big data";
-
     can_frame frame{};
+
+    if ( data.size() > sizeof(frame.data) )
+        throw verror << "Too big data";
+
     frame.can_id = id;
     frame.can_dlc = data.size();
     std::copy( data.begin(), data.end(), frame.data );
@@ -115,7 +118,10 @@ void vcan_socket::_pimpl::send( id_type id, const std::string& data )
 //=======================================================================================
 vcan_socket::vcan_socket()
     : _p( new _pimpl(this) )
-{}
+{
+    static_assert( std::is_same<canid_t,id_type>::value,
+                   "vcan_socket::id_type is wrong." );
+}
 //=======================================================================================
 vcan_socket::~vcan_socket()
 {}
@@ -139,10 +145,11 @@ std::ostream& operator <<( std::ostream& os, const vcan_socket::message& msg )
        << "|" << std::setw(6) << msg.id << " > "
        << std::setw(3*8) << vbyte_buffer(msg.data).to_Hex('.')
        << std::dec
-       << ", if:"<< std::setw(3) << msg.iface
-       << ", rx:"<< std::setw(3) << msg.rx
-       << ", tx:"<< std::setw(3) << msg.tx
-       << "|";
+       << ", if:" << std::setw(3) << msg.iface
+       << ", rx:" << std::setw(3) << msg.rx
+       << ", tx:" << std::setw(3) << msg.tx
+       << ", "                    << msg.time.microseconds()
+       << " |";
 
     return os;
 }

@@ -12,3 +12,4 @@ include( $$VLIBS_DIR/qmake/vtimer.pri )
 SOURCES += main.cpp
 
 OTHER_FILES += CMakeLists.txt
+OTHER_FILES += ../README

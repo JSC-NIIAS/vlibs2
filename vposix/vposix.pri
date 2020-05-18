@@ -85,6 +85,7 @@ isEmpty(qi_vposix) {
     HEADERS     += $$VLIBS_DIR/vposix/impl_vposix/wrap_stdio.h
     SOURCES     += $$VLIBS_DIR/vposix/impl_vposix/wrap_stdio.cpp
 
+    HEADERS     += $$VLIBS_DIR/vposix/impl_vposix/wrap_signal.h
     SOURCES     += $$VLIBS_DIR/vposix/impl_vposix/wrap_signal.cpp
 
     HEADERS     += $$VLIBS_DIR/vposix/impl_vposix/wrap_sys_epoll.h
@@ -95,6 +96,9 @@ isEmpty(qi_vposix) {
 
     HEADERS     += $$VLIBS_DIR/vposix/impl_vposix/wrap_sys_file.h
     SOURCES     += $$VLIBS_DIR/vposix/impl_vposix/wrap_sys_file.cpp
+
+    HEADERS     += $$VLIBS_DIR/vposix/impl_vposix/wrap_sys_ioctl.h
+    SOURCES     += $$VLIBS_DIR/vposix/impl_vposix/wrap_sys_ioctl.cpp
 
     HEADERS     += $$VLIBS_DIR/vposix/impl_vposix/wrap_sys_socket.h
     SOURCES     += $$VLIBS_DIR/vposix/impl_vposix/wrap_sys_socket.cpp

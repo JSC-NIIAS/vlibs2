@@ -41,7 +41,13 @@ void test_receiving_on_vcan0()
     {
         s.bind( "vcan0" );
         s.send( 0x123, "12345678" );
-    } catch (...)
+    }
+    catch ( const std::runtime_error& e )
+    {
+        vwarning << "Cannot bind: '" << e.what() << "'.";
+        vapplication::stop();
+    }
+    catch (...)
     {
         vwarning << "Cannot bind to vcan0";
         vapplication::stop();
